@@ -48,7 +48,6 @@ exports.handler = async (event, context) => {
 
   const ref = payload["commit_ref"];
   const url = payload["commit_url"];
-  const admin_url = payload["admin_url"];
   const deploy_id = payload["id"];
   const state = payload["state"];
 
@@ -64,22 +63,22 @@ exports.handler = async (event, context) => {
 
   const endpoint = `https://api.github.com/repos/${owner}/${repo}/statuses/${ref}`;
 
-  const target_url = `${admin_url}/deploys/${deploy_id}`
+  const target_url = `https://client.uat2.bluescape.com/pr-${deploy_id}/my`
 
   var reply;
 
   switch(state) {
     case "ready":
-      reply = {state: "success", target_url: target_url, context: "deploy to netlify"};
+      reply = {state: "success", target_url: target_url, context: "deploy to UAT2"};
       break;
     case "building":
-      reply = {state: "pending", target_url: target_url, context: "deploy to netlify"};
+      reply = {state: "pending", target_url: target_url, context: "deploy to UAT2"};
       break;
     case "error":
-      reply = {state: "failure", target_url: target_url, context: "deploy to netlify"};
+      reply = {state: "failure", target_url: target_url, context: "deploy to UAT2"};
       break;
     default:
-      reply = {state: "error", context: "deploy to netlify"};
+      reply = {state: "error", context: "deploy to UAT2"};
   }
 
   return fetch(endpoint, {
